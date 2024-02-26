@@ -10,4 +10,3 @@ MVP:
 	-can follow each other
 -readers:
 	-can view things
-	
