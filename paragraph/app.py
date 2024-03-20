@@ -1,6 +1,6 @@
 from flask import Flask, redirect, url_for, send_file, \
     render_template, make_response
-
+import json
 
 home = open("paragraph/index.html", "r")
 style = open("paragraph/styles/style.css", "r")
@@ -8,6 +8,9 @@ about_page = open("paragraph/about.html", "r")
 app = Flask(__name__,)
 not_found = open("paragraph/not_found.html", "r")
 webpages_so_far = "home, about_page"
+stored = open("paragraph/iphone.json", "r")
+stored_python = json.loads(stored)
+
 
 # top_seven_books = [
 #     {'name': 'Why do we sleep: unlocking the power of sleep and dreams', 'rating': '4,9 stars'},
@@ -34,6 +37,10 @@ def index():
 def about():
     return about_page
 
+@app.route('/data')
+def data():
+    return '<h1>' + json[data]['title'] + '</h1>' + '<p>' + json[data]['price'] + '</p>'
+
 @app.route('/<slug>')
 def check(slug):
     if slug in webpages_so_far:
@@ -42,11 +49,6 @@ def check(slug):
         return not_found
     
 
-# @app.route('/<slug>')
-# def book2(slug):
-#     if slug in top_seven_books:
-#         return '<h1>' + top_seven_books[slug]['name'] + '</h1>' + '<p>' + top_seven_books[slug]['price'] + '</p>'
-#     else:
-#         return 'no such page exists. get it? page? book?' 
+
 
 app.run()
