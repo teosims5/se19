@@ -1,0 +1,5 @@
+**/.DS_Store
+**/networking-basics-main
+venv
+.env
+__pycache__
