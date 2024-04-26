@@ -1,6 +1,7 @@
-from flask import Flask, redirect, url_for, send_file, \
-    render_template, make_response
+from flask import Flask, redirect, url_for, \
+    send_file, render_template, make_response, Blueprint
 import json
+from extensions.database import db
 
 home = open("paragraph/index.html", "r")
 style = open("paragraph/styles/style.css", "r")
@@ -12,15 +13,15 @@ stored = open("paragraph/iphone.json", "r")
 stored_python = json.loads(stored)
 
 
-# top_seven_books = [
-#     {'name': 'Why do we sleep: unlocking the power of sleep and dreams', 'rating': '4,9 stars'},
-#     {'name': 'Make it stick: the science of successful learning', 'rating': '4,8 stars'},
-#     {'name': 'Crice', 'rating': '4,89 stars'},
-#     {'name': 'Girls against god', 'rating': '4,5 stars'},
-#     {'name': 'These violent delights', 'rating': '4,45 stars'},
-#     {'name': 'To paradise', 'rating': '4,13 stars'},
-#     {'name': 'The greek myths: complete edition', 'rating': '4,12 stars'},
-# ]
+top_seven_books = [
+    {'name': 'Why do we sleep: unlocking the power of sleep and dreams', 'rating': '4,9 stars'},
+    {'name': 'Make it stick: the science of successful learning', 'rating': '4,8 stars'},
+    {'name': 'Circe', 'rating': '4,89 stars'},
+    {'name': 'Girls against god', 'rating': '4,5 stars'},
+    {'name': 'These violent delights', 'rating': '4,45 stars'},
+    {'name': 'To paradise', 'rating': '4,13 stars'},
+    {'name': 'The greek myths: complete edition', 'rating': '4,12 stars'},
+]
 
 #I wanted to use make a little data storage variable and call out info to be displayed on the page depending on what URL you typed in, but that doesn't make much sense 
 #because you wouldn't do that in real life so then i tried another approach and got confused 
@@ -28,8 +29,19 @@ stored_python = json.loads(stored)
 
 app.config.from_object('config')
 
+def create_app():
+    app = Flask(__name__)
+    app.config.from_object('config')
+    
+    register_extensions(app)
+    register_blueprints(app)
+
+    
+    return app
+
 @app.route('/')
 def index():
+    # render_template("index.html")
     return home
     
 
@@ -49,6 +61,7 @@ def check(slug):
         return not_found
     
 
-
+def register_extensions(app: Flask):
+    db.init_app(app)
 
 app.run()
